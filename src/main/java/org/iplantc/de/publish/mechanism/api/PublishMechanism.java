@@ -34,11 +34,15 @@ public interface PublishMechanism {
 	 * @param publishActionDescriptor
 	 *            {@link PublishActionDescriptor} that provides the necessary
 	 *            context for the mechanism to find and do the publishing.
+	 * @param publishContext
+	 *            {@link PublishContext} with callbacks and hooks to call DE and
+	 *            iRODS services
 	 * @return {@link PublishResult} That represents the status and any error or
 	 *         validation information
 	 */
 	public PublishResult preValidate(
-			final PublishActionDescriptor publishActionDescriptor);
+			final PublishActionDescriptor publishActionDescriptor,
+			final PublishContext publishContext);
 
 	/**
 	 * This method will be called after success in the <code>preValidate</code>
@@ -52,12 +56,16 @@ public interface PublishMechanism {
 	 * @param publishActionDescriptor
 	 *            {@link PublishDescriptor} with the necessary context for an
 	 *            individual publicastion action
+	 * @param publishContext
+	 *            {@link PublishContext} with callbacks and hooks to call DE and
+	 *            iRODS services
 	 * @return {@link PublishResult} with the result of this publish action. For
 	 *         synchronous actions, this may be the failure or completion
 	 *         success, for an asynchyronous action, it would represent the
 	 *         success or failure in enquing the the publish action.
 	 */
 	public PublishResult publish(
-			final PublishActionDescriptor publishActionDescriptor);
+			final PublishActionDescriptor publishActionDescriptor,
+			final PublishContext publishContext);
 
 }
