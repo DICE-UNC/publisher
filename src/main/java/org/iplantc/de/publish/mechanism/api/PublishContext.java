@@ -3,6 +3,11 @@
  */
 package org.iplantc.de.publish.mechanism.api;
 
+import org.irods.jargon.core.connection.IRODSAccount;
+import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
+
+import java.util.Map;
+
 /**
  * Provides callbacks and context from DE publish service to the underlying
  * foreground mechanism. This allows the preValidate and synchronous parts of
@@ -14,8 +19,23 @@ package org.iplantc.de.publish.mechanism.api;
  */
 public interface PublishContext {
 
-	/*
-	 * TODO: enumerate appropriate context and callback hooks
-	 */
+    /**
+     * @return the account to use when connecting to iRODS.
+     */
+    IRODSAccount getIrodsAccount();
 
+    /**
+     * @return the iRODS access object factory.
+     */
+    IRODSAccessObjectFactory getAccessObjectFactory();
+
+    /**
+     * @param irodsPath an absolute path to a data object or collection in iRODS.
+     * @return the metadata associated with {@code irodsPath}.
+     */
+    Map<String, String> getPathMetadata(String irodsPath);
+
+	/*
+	 * TODO: add hooks for submitting jobs and for obtaining information about apps.
+	 */
 }
