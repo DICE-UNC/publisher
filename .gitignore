@@ -4,6 +4,7 @@
 **/.springBeans
 **/testing.properties
 **/*.eml
+**/*.iml
 .idea
 .project
 .metadata
