@@ -11,12 +11,17 @@
 	<artifactId>publisher-sandbox</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>publisher framework for DE - API</name>
+	<name>publisher sandbox</name>
 	<dependencies>
 		<dependency>
 			<groupId>org.iplantc.de</groupId>
 			<artifactId>publisher-api</artifactId>
-<version>${project.version}</version>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections</artifactId>
+			<version>0.9.10</version>
 		</dependency>
 	</dependencies>
 </project>
