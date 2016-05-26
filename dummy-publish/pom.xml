@@ -8,15 +8,19 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.iplantc.de</groupId>
-	<artifactId>publisher-sandbox</artifactId>
+	<artifactId>dummy-publish</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>publisher framework for DE - API</name>
+	<name>publisher api dummy implementation with a noop</name>
 	<dependencies>
 		<dependency>
+			<groupId>org.irods.jargon</groupId>
+			<artifactId>jargon-core</artifactId>
+		</dependency>
+<dependency>
 			<groupId>org.iplantc.de</groupId>
 			<artifactId>publisher-api</artifactId>
-<version>${project.version}</version>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 </project>
