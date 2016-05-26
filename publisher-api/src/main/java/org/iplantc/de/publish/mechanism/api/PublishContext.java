@@ -3,10 +3,10 @@
  */
 package org.iplantc.de.publish.mechanism.api;
 
+import java.util.Map;
+
 import org.irods.jargon.core.connection.IRODSAccount;
 import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
-
-import java.util.Map;
 
 /**
  * Provides callbacks and context from DE publish service to the underlying
@@ -19,23 +19,22 @@ import java.util.Map;
  */
 public interface PublishContext {
 
-    /**
-     * @return the account to use when connecting to iRODS.
-     */
-    IRODSAccount getIrodsAccount();
-
-    /**
-     * @return the iRODS access object factory.
-     */
-    IRODSAccessObjectFactory getAccessObjectFactory();
-
-    /**
-     * @param irodsPath an absolute path to a data object or collection in iRODS.
-     * @return the metadata associated with {@code irodsPath}.
-     */
-    Map<String, String> getPathMetadata(String irodsPath);
-
-	/*
-	 * TODO: add hooks for submitting jobs and for obtaining information about apps.
+	/**
+	 * @return the account to use when connecting to iRODS.
 	 */
+	IRODSAccount getIrodsAccount();
+
+	/**
+	 * @return the iRODS access object factory.
+	 */
+	IRODSAccessObjectFactory getAccessObjectFactory();
+
+	/**
+	 * @param irodsPath
+	 *            an absolute path to a data object or collection in iRODS.
+	 * @return the metadata associated with {@code irodsPath}.
+	 */
+	Map<String, String> getPathMetadata(String irodsPath);
+
+	JobSubmissionResult submitJob(JobSubmission jobSubmission);
 }

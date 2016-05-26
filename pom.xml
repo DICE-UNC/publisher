@@ -260,5 +260,6 @@
 	</build>
 	<modules>
 		<module>publisher-api</module>
+		<module>publisher-sandbox</module>
 	</modules>
 </project>
