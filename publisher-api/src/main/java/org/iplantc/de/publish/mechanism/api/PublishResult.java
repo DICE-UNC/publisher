@@ -16,6 +16,8 @@ import java.util.List;
  */
 public class PublishResult {
 
+	public static final int PUBLISH_RESULT_NORMAL = 0;
+
 	/**
 	 * Represents the phase of the publishing cycle that this response pertains
 	 * to
