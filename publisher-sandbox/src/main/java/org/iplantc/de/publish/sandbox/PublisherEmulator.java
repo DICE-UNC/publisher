@@ -4,12 +4,13 @@
 package org.iplantc.de.publish.sandbox;
 
 import java.io.File;
-import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 
 import org.iplantc.de.publish.mechanism.api.exception.PublicationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xeustechnologies.jcl.JarClassLoader;
 
 /**
  * Black box host of publishing mechanisms for testing and validation purposes
@@ -20,6 +21,7 @@ import org.slf4j.LoggerFactory;
 public class PublisherEmulator {
 
 	private SandboxConfiguration sandboxConfiguration;
+	private JarClassLoader jcl;
 
 	public static final Logger log = LoggerFactory
 			.getLogger(PublisherEmulator.class);
@@ -71,20 +73,20 @@ public class PublisherEmulator {
 
 	}
 
-	public void initialize(String libDir) throws Exception {
+	public void loadPublisherClasses(String libDir) throws Exception {
+
 		File dependencyDirectory = new File(libDir);
 		File[] files = dependencyDirectory.listFiles();
-		ArrayList<URL> urls = new ArrayList<URL>();
+		ArrayList<URI> uris = new ArrayList<URI>();
 		for (int i = 0; i < files.length; i++) {
 			if (files[i].getName().endsWith(".jar")) {
-				urls.add(files[i].toURL());
-				// urls.add(files[i].toURI().toURL());
+				log.info("adding jar:{} to candidates", files[i]);
+				uris.add(files[i].toURI());
 			}
-		} /*
-		 * classLoader = new JarFileClassLoader("Scheduler CL" +
-		 * System.currentTimeMillis(), urls.toArray(new URL[urls.size()]),
-		 * GFClassLoader.class.getClassLoader());
-		 */
+		}
+
+		log.info("creating jar class loader...");
+		jcl = new JarClassLoader();
 	}
 
 }
