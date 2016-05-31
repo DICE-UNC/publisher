@@ -9,6 +9,7 @@ import org.iplantc.de.publish.mechanism.api.PublishMechanism;
 import org.iplantc.de.publish.mechanism.api.PublishPhaseEnum;
 import org.iplantc.de.publish.mechanism.api.PublishResult;
 import org.iplantc.de.publish.mechanism.api.PublishStatusEnum;
+import org.iplantc.de.publish.mechanism.api.annotations.PublicationDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
  * @author Mike Conway - DICE
  *
  */
+@PublicationDriver(author = "DFC", description = "Noop publisher that just logs", name = "Dummy Logging", version = "1.0.0", isAsynch = false)
 public class DummyPublishMechanism implements PublishMechanism {
 
 	public static final Logger log = LoggerFactory

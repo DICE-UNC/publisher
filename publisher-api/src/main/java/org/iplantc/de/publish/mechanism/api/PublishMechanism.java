@@ -3,6 +3,8 @@
  */
 package org.iplantc.de.publish.mechanism.api;
 
+import org.iplantc.de.publish.mechanism.api.annotations.PublicationDriver;
+
 /**
  * Describes a publish mechanism, this is a plugin that can format and publish
  * collection data sorted as an AIP in the DE/iRODS environment as a DIP in an
@@ -10,6 +12,9 @@ package org.iplantc.de.publish.mechanism.api;
  * underneath this interface, and can surface a preValidate foreground method
  * that can do sanity checks and pre-processing, and a sych|asynch publish
  * action that actually creates the DIP in the target repository.
+ * <p/>
+ * Note that subclasses should be annotated with the {@link PublicationDriver}
+ * annotation to describe the driver to the publishing subsystem.
  * 
  * @author Mike Conway - DICE, Dennis Roberts, CyVerse
  *
