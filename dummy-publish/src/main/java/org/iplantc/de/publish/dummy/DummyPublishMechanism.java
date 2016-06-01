@@ -1,7 +1,7 @@
 /**
  * 
  */
-package og.iplantc.de.publish.dummy;
+package org.iplantc.de.publish.dummy;
 
 import org.iplantc.de.publish.mechanism.api.PublishActionDescriptor;
 import org.iplantc.de.publish.mechanism.api.PublishContext;

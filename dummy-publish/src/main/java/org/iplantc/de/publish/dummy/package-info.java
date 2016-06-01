@@ -6,4 +6,4 @@
  * @author Mike Conway - DICE
  *
  */
-package og.iplantc.de.publish.dummy;
+package org.iplantc.de.publish.dummy;

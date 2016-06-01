@@ -6,7 +6,9 @@ package org.iplantc.de.publish.sandbox;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.iplantc.de.publish.mechanism.api.annotations.PublicationDriver;
@@ -32,6 +34,7 @@ public class PublisherEmulator {
 
 	private SandboxConfiguration sandboxConfiguration;
 	private JarClassLoader jcl;
+	private List<URL> urls = new ArrayList<URL>();
 
 	public static final Logger log = LoggerFactory
 			.getLogger(PublisherEmulator.class);
@@ -51,12 +54,15 @@ public class PublisherEmulator {
 		 */
 
 		ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-		configurationBuilder.addClassLoader(JclContext.get()).addScanners(
-				new SubTypesScanner(), new TypeAnnotationsScanner());
+		configurationBuilder
+				.setUrls(urls)
+				.addClassLoader(JclContext.get())
+				.addScanners(new SubTypesScanner(),
+						new TypeAnnotationsScanner());
 		Reflections reflections = new Reflections(configurationBuilder);
 
-		Set<Class<?>> mechanisms = reflections
-				.getTypesAnnotatedWith(PublicationDriver.class);
+		Set<Class<?>> mechanisms = reflections.getTypesAnnotatedWith(
+				PublicationDriver.class, true);
 		log.info("mechanisms:{}", mechanisms);
 		return mechanisms;
 	}
@@ -124,6 +130,7 @@ public class PublisherEmulator {
 			log.info("adding uri for jar:{}", uri);
 			try {
 				jcl.add(uri.toURL());
+				urls.add(uri.toURL()); // testing outside jcl FIXME: decide!
 			} catch (MalformedURLException e) {
 				log.error("malformed url for jar file:{}", uri, e);
 				throw new PublicationRuntimeException("error loading jar file",
