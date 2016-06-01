@@ -4,13 +4,23 @@
 package org.iplantc.de.publish.sandbox;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Set;
 
+import org.iplantc.de.publish.mechanism.api.annotations.PublicationDriver;
 import org.iplantc.de.publish.mechanism.api.exception.PublicationException;
+import org.iplantc.de.publish.mechanism.api.exception.PublicationRuntimeException;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
+import org.reflections.scanners.TypeAnnotationsScanner;
+import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xeustechnologies.jcl.JarClassLoader;
+import org.xeustechnologies.jcl.context.DefaultContextLoader;
+import org.xeustechnologies.jcl.context.JclContext;
 
 /**
  * Black box host of publishing mechanisms for testing and validation purposes
@@ -32,6 +42,23 @@ public class PublisherEmulator {
 	 */
 	public PublisherEmulator() {
 
+	}
+
+	public Set<Class<?>> listPublishers() {
+
+		/*
+		 * see: https://github.com/ronmamo/reflections
+		 */
+
+		ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+		configurationBuilder.addClassLoader(JclContext.get()).addScanners(
+				new SubTypesScanner(), new TypeAnnotationsScanner());
+		Reflections reflections = new Reflections(configurationBuilder);
+
+		Set<Class<?>> mechanisms = reflections
+				.getTypesAnnotatedWith(PublicationDriver.class);
+		log.info("mechanisms:{}", mechanisms);
+		return mechanisms;
 	}
 
 	/**
@@ -70,10 +97,15 @@ public class PublisherEmulator {
 
 		log.info("scanning for plugin jars at:{}",
 				sandboxConfiguration.getJarFilePluginDir());
+		loadPublisherClasses(sandboxConfiguration.getJarFilePluginDir());
 
 	}
 
-	public void loadPublisherClasses(String libDir) throws Exception {
+	private void loadPublisherClasses(String libDir) {
+
+		/*
+		 * See https://github.com/kamranzafar/JCL for usage of JCL
+		 */
 
 		File dependencyDirectory = new File(libDir);
 		File[] files = dependencyDirectory.listFiles();
@@ -87,6 +119,21 @@ public class PublisherEmulator {
 
 		log.info("creating jar class loader...");
 		jcl = new JarClassLoader();
+
+		for (URI uri : uris) {
+			log.info("adding uri for jar:{}", uri);
+			try {
+				jcl.add(uri.toURL());
+			} catch (MalformedURLException e) {
+				log.error("malformed url for jar file:{}", uri, e);
+				throw new PublicationRuntimeException("error loading jar file",
+						e);
+			}
+		}
+
+		DefaultContextLoader context = new DefaultContextLoader(jcl);
+		context.loadContext();
+
 	}
 
 }

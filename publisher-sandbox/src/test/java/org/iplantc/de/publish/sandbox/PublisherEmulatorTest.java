@@ -3,10 +3,12 @@
  */
 package org.iplantc.de.publish.sandbox;
 
-import static org.junit.Assert.fail;
-
 import java.util.Properties;
+import java.util.Set;
 
+import junit.framework.Assert;
+
+import org.iplantc.de.publish.mechanism.api.exception.PublicationException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -24,7 +26,8 @@ public class PublisherEmulatorTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		// testingProperties = TestingProperties.
+		PublisherTestingProperties publisherTestingProperties = new PublisherTestingProperties();
+		testingProperties = publisherTestingProperties.getTestProperties();
 	}
 
 	/**
@@ -35,8 +38,29 @@ public class PublisherEmulatorTest {
 	}
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void testInitWithConfig() throws PublicationException {
+		SandboxConfiguration sandboxConfiguration = new SandboxConfiguration();
+		sandboxConfiguration
+				.setJarFilePluginDir(testingProperties
+						.getProperty(PublisherTestingProperties.TEST_PUBLISHER_DIR_PROPERTY));
+		PublisherEmulator emulator = new PublisherEmulator();
+		emulator.setSandboxConfiguration(sandboxConfiguration);
+		emulator.init();
+
+	}
+
+	@Test
+	public void testListPublishers() throws PublicationException {
+		SandboxConfiguration sandboxConfiguration = new SandboxConfiguration();
+		sandboxConfiguration
+				.setJarFilePluginDir(testingProperties
+						.getProperty(PublisherTestingProperties.TEST_PUBLISHER_DIR_PROPERTY));
+		PublisherEmulator emulator = new PublisherEmulator();
+		emulator.setSandboxConfiguration(sandboxConfiguration);
+		emulator.init();
+		Set<Class<?>> mechanisms = emulator.listPublishers();
+		Assert.assertFalse("no mechanisms returned", mechanisms.isEmpty());
+
 	}
 
 }
