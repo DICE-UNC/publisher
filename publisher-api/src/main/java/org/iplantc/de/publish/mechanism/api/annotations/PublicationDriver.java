@@ -4,6 +4,8 @@
 package org.iplantc.de.publish.mechanism.api.annotations;
 
 import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Annotation that marks up a publish mechanism for discovery
@@ -12,6 +14,7 @@ import java.lang.annotation.Documented;
  *
  */
 @Documented
+@Retention(RetentionPolicy.RUNTIME)
 public @interface PublicationDriver {
 	/**
 	 * Author of the publisher plugin

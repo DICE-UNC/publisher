@@ -4,6 +4,7 @@
 package org.iplantc.de.publish.sandbox;
 
 import java.io.File;
+import java.lang.annotation.Annotation;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -47,7 +48,28 @@ public class PublisherEmulator {
 
 	}
 
-	public Set<Class<?>> listPublishers() {
+	public List<PublisherDescription> listPublisherDescriptions() {
+		log.info("listPublisherDescriptions()");
+		Set<Class<?>> classes = listPublisherClasses();
+
+		for (Class clazz : classes) {
+			log.info("processing class:{}", clazz);
+			for (Annotation annotation : clazz.getDeclaredAnnotations()) {
+				log.info("...annotation:{}", annotation.toString());
+			}
+		}
+
+		return null;
+
+	}
+
+	/**
+	 * Method returns the classes for all registered publishers. Good for
+	 * debugging and testing purposes
+	 * 
+	 * @return <code>Set</code> of all of the annotated publisher classes
+	 */
+	public Set<Class<?>> listPublisherClasses() {
 
 		/*
 		 * see: https://github.com/ronmamo/reflections

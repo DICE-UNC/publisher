@@ -3,6 +3,7 @@
  */
 package org.iplantc.de.publish.sandbox;
 
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -58,8 +59,23 @@ public class PublisherEmulatorTest {
 		PublisherEmulator emulator = new PublisherEmulator();
 		emulator.setSandboxConfiguration(sandboxConfiguration);
 		emulator.init();
-		Set<Class<?>> mechanisms = emulator.listPublishers();
+		Set<Class<?>> mechanisms = emulator.listPublisherClasses();
 		Assert.assertFalse("no mechanisms returned", mechanisms.isEmpty());
+
+	}
+
+	@Test
+	public void testListPublicationDescriptions() throws PublicationException {
+		SandboxConfiguration sandboxConfiguration = new SandboxConfiguration();
+		sandboxConfiguration
+				.setJarFilePluginDir(testingProperties
+						.getProperty(PublisherTestingProperties.TEST_PUBLISHER_DIR_PROPERTY));
+		PublisherEmulator emulator = new PublisherEmulator();
+		emulator.setSandboxConfiguration(sandboxConfiguration);
+		emulator.init();
+		List<PublisherDescription> descriptions = emulator
+				.listPublisherDescriptions();
+		Assert.assertNotNull("null descriptions found:{}", descriptions);
 
 	}
 
