@@ -64,15 +64,31 @@ public class PublisherDiscoveryService {
 	public List<PublisherPluginDescription> listPublisherDescriptions() {
 		log.info("listPublisherDescriptions()");
 		Set<Class<?>> classes = listPublisherClasses();
+		List<PublisherPluginDescription> descriptions = new ArrayList<PublisherPluginDescription>();
+		PublisherPluginDescription description;
+		PublicationDriver driver;
 
 		for (Class<?> clazz : classes) {
 			log.info("processing class:{}", clazz);
 			for (Annotation annotation : clazz.getDeclaredAnnotations()) {
-				log.info("...annotation:{}", annotation.toString());
+				if (annotation instanceof PublicationDriver) {
+					driver = clazz.getAnnotation(PublicationDriver.class);
+					log.info("...annotation:{}", annotation.toString());
+					log.info("driver name:{}", driver.name());
+					description = new PublisherPluginDescription();
+					description.setAsynch(driver.isAsynch());
+					description.setAuthor(driver.author());
+					description.setDescription(driver.description());
+					description.setPublisherClass(clazz);
+					description.setPublisherName(driver.name());
+					description.setVersion(driver.version());
+					descriptions.add(description);
+				}
+
 			}
 		}
 
-		return null;
+		return descriptions;
 
 	}
 
@@ -159,8 +175,10 @@ public class PublisherDiscoveryService {
 			}
 		}
 
-		DefaultContextLoader context = new DefaultContextLoader(jcl);
-		context.loadContext();
+		if (JclContext.get() == null) {
+			DefaultContextLoader context = new DefaultContextLoader(jcl);
+			context.loadContext();
+		}
 
 	}
 

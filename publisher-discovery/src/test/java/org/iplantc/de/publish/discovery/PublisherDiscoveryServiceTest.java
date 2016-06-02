@@ -1,5 +1,6 @@
 package org.iplantc.de.publish.discovery;
 
+import java.io.File;
 import java.util.List;
 import java.util.Properties;
 
@@ -43,11 +44,14 @@ public class PublisherDiscoveryServiceTest {
 	}
 
 	@Test
-	public void testListPublicationDescriptions() throws PublicationException {
+	public void testListPublicationDescriptions() throws Exception {
+		File testDriver = PublisherTestingProperties
+				.getClasspathResourceAsFile("/sample-jars/dummy-publish-1.0.0-SNAPSHOT.jar");
 		PublisherDiscoveryConfiguration publisherDiscoveryConfiguration = new PublisherDiscoveryConfiguration();
-		publisherDiscoveryConfiguration
-				.setJarFilePluginDir(testingProperties
-						.getProperty(PublisherTestingProperties.TEST_PUBLISHER_DIR_PROPERTY));
+		publisherDiscoveryConfiguration.setJarFilePluginDir(testDriver
+				.getParent());
+		// testingProperties
+		// .getProperty(PublisherTestingProperties.TEST_PUBLISHER_DIR_PROPERTY));
 		PublisherDiscoveryService publisherDiscoveryService = new PublisherDiscoveryService();
 		publisherDiscoveryService
 				.setPublisherDiscoveryConfiguration(publisherDiscoveryConfiguration);
@@ -55,7 +59,22 @@ public class PublisherDiscoveryServiceTest {
 		List<PublisherPluginDescription> descriptions = publisherDiscoveryService
 				.listPublisherDescriptions();
 		Assert.assertNotNull("null descriptions found:{}", descriptions);
+		String dummyName = "Dummy Logging";
+		boolean found = false;
+
+		for (PublisherPluginDescription description : descriptions) {
+			if (!description.getPublisherName().equals(dummyName)) {
+				continue;
+			}
+
+			Assert.assertFalse(description.getAuthor().isEmpty());
+			Assert.assertFalse(description.getDescription().isEmpty());
+			Assert.assertFalse(description.getPublisherName().isEmpty());
+			Assert.assertFalse(description.getVersion().isEmpty());
+			found = true;
+		}
+
+		Assert.assertTrue("didnt find test driver", found);
 
 	}
-
 }
