@@ -260,6 +260,7 @@
 	</build>
 	<modules>
 		<module>publisher-api</module>
+		<module>publisher-discovery</module>
 		<module>publisher-sandbox</module>
 		<module>dummy-publish</module>
 	</modules>
