@@ -5,10 +5,10 @@ package org.iplantc.de.publish.sandbox;
 
 import java.util.List;
 import java.util.Properties;
-import java.util.Set;
 
 import junit.framework.Assert;
 
+import org.iplantc.de.publish.mechanism.api.PublisherPluginDescription;
 import org.iplantc.de.publish.mechanism.api.exception.PublicationException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -51,20 +51,6 @@ public class PublisherEmulatorTest {
 	}
 
 	@Test
-	public void testListPublishers() throws PublicationException {
-		SandboxConfiguration sandboxConfiguration = new SandboxConfiguration();
-		sandboxConfiguration
-				.setJarFilePluginDir(testingProperties
-						.getProperty(PublisherTestingProperties.TEST_PUBLISHER_DIR_PROPERTY));
-		PublisherEmulator emulator = new PublisherEmulator();
-		emulator.setSandboxConfiguration(sandboxConfiguration);
-		emulator.init();
-		Set<Class<?>> mechanisms = emulator.listPublisherClasses();
-		Assert.assertFalse("no mechanisms returned", mechanisms.isEmpty());
-
-	}
-
-	@Test
 	public void testListPublicationDescriptions() throws PublicationException {
 		SandboxConfiguration sandboxConfiguration = new SandboxConfiguration();
 		sandboxConfiguration
@@ -73,8 +59,8 @@ public class PublisherEmulatorTest {
 		PublisherEmulator emulator = new PublisherEmulator();
 		emulator.setSandboxConfiguration(sandboxConfiguration);
 		emulator.init();
-		List<PublisherDescription> descriptions = emulator
-				.listPublisherDescriptions();
+		List<PublisherPluginDescription> descriptions = emulator
+				.listLoadedPlugins();
 		Assert.assertNotNull("null descriptions found:{}", descriptions);
 
 	}
