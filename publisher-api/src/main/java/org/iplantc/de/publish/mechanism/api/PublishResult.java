@@ -37,7 +37,7 @@ public class PublishResult {
 	 * The publish system will pass this intermediate DIP location between the
 	 * result of the validate and the publication step.
 	 */
-	private String intermediateDipAbsolutePath;
+	private String intermediateDipAbsolutePath = "";
 
 	private PublishStatusEnum publishStatus;
 

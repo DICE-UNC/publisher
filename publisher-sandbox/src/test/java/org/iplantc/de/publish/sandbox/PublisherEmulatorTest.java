@@ -8,11 +8,15 @@ import java.util.Properties;
 
 import junit.framework.Assert;
 
+import org.iplantc.de.publish.mechanism.api.PublishActionDescriptor;
+import org.iplantc.de.publish.mechanism.api.PublishContext;
+import org.iplantc.de.publish.mechanism.api.PublishResult;
 import org.iplantc.de.publish.mechanism.api.PublisherPluginDescription;
 import org.iplantc.de.publish.mechanism.api.exception.PublicationException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
  * @author Mike Conway - DICE
@@ -45,6 +49,9 @@ public class PublisherEmulatorTest {
 				.setJarFilePluginDir(testingProperties
 						.getProperty(PublisherTestingProperties.TEST_PUBLISHER_DIR_PROPERTY));
 		PublisherEmulator emulator = new PublisherEmulator();
+		PublishContext publishContext = Mockito.mock(PublishContext.class);
+
+		emulator.setPublishContext(publishContext);
 		emulator.setSandboxConfiguration(sandboxConfiguration);
 		emulator.init();
 
@@ -57,11 +64,34 @@ public class PublisherEmulatorTest {
 				.setJarFilePluginDir(testingProperties
 						.getProperty(PublisherTestingProperties.TEST_PUBLISHER_DIR_PROPERTY));
 		PublisherEmulator emulator = new PublisherEmulator();
+		PublishContext publishContext = Mockito.mock(PublishContext.class);
+
+		emulator.setPublishContext(publishContext);
 		emulator.setSandboxConfiguration(sandboxConfiguration);
 		emulator.init();
 		List<PublisherPluginDescription> descriptions = emulator
 				.listLoadedPlugins();
 		Assert.assertNotNull("null descriptions found:{}", descriptions);
+
+	}
+
+	@Test
+	public void testPublish() throws PublicationException {
+		SandboxConfiguration sandboxConfiguration = new SandboxConfiguration();
+		sandboxConfiguration
+				.setJarFilePluginDir(testingProperties
+						.getProperty(PublisherTestingProperties.TEST_PUBLISHER_DIR_PROPERTY));
+		PublisherEmulator emulator = new PublisherEmulator();
+		PublishContext publishContext = Mockito.mock(PublishContext.class);
+
+		emulator.setPublishContext(publishContext);
+		emulator.setSandboxConfiguration(sandboxConfiguration);
+		emulator.init();
+		PublishActionDescriptor descriptor = new PublishActionDescriptor();
+		descriptor.setPublishSourceAbsolutePath("/a/path");
+		PublishResult result = emulator.triggerPublicationLifecycle(
+				PublisherTestingProperties.DUMMY_PUBLISHER, descriptor);
+		Assert.assertNotNull("null result", result);
 
 	}
 

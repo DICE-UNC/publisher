@@ -18,6 +18,7 @@ import org.irods.jargon.testutils.TestingUtilsException;
 public class PublisherTestingProperties {
 
 	public static final String TEST_PUBLISHER_DIR_PROPERTY = "driver.jar.dir";
+	public static final String DUMMY_PUBLISHER = "Dummy Logging";
 
 	/**
 	 * 
